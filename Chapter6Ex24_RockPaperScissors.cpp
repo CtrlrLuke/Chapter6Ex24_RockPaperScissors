@@ -20,18 +20,23 @@ using namespace std;
 string GetUserChoice();
 string GetComputerChoice();
 string DetermineWinner(const string& user, const string& computer);
-char AskToPlayAgain();
+bool AskToPlayAgain();
+string GetPlayerName();
 
 /*
    main
-   Repeats the game loop until the user chooses not to play again.
+   Gets player name, tracks win count, and loops using sentinel ("Play again?")
 */
 int main()
 {
     srand(static_cast<unsigned>(time(0))); // Seed RNG
-    char playAgain;
+    string playerName = GetPlayerName();
+    int playerWins = 0;
 
-    do {
+    bool play = true;
+
+    while (play)
+    {
         string userChoice = GetUserChoice();
         string computerChoice = GetComputerChoice();
 
@@ -40,12 +45,33 @@ int main()
         string result = DetermineWinner(userChoice, computerChoice);
         cout << result << endl;
 
-        playAgain = AskToPlayAgain();
+        if (result == "You win!")
+            playerWins++;
 
-    } while (playAgain == 'Y');
+        play = AskToPlayAgain();
+    }
 
-    cout << "Thanks for playing!\n";
+    cout << "\nThanks for playing, " << playerName << "!\n";
+    cout << "Total wins: " << playerWins << endl;
+
     return 0;
+}
+
+/*
+   GetPlayerName
+   Prompts for and returns the player's name
+*/
+string GetPlayerName()
+{
+    string name;
+    cout << "Enter your name: ";
+    getline(cin, name);
+    while (name.empty())
+    {
+        cout << "ERROR: Name cannot be blank. Enter your name: ";
+        getline(cin, name);
+    }
+    return name;
 }
 
 /*
@@ -57,7 +83,7 @@ string GetUserChoice()
     string input;
     while (true)
     {
-        cout << "Enter your choice (rock, paper, or scissors): ";
+        cout << "\nEnter your choice (rock, paper, or scissors): ";
         getline(cin, input);
 
         // Convert to lowercase manually if needed
@@ -102,21 +128,21 @@ string DetermineWinner(const string& user, const string& computer)
 
 /*
    AskToPlayAgain
-   Prompts the user to play again (Y/N). Validates input.
+   Prompts user with sentinel-style loop control.
 */
-char AskToPlayAgain()
+bool AskToPlayAgain()
 {
     string input;
     while (true)
     {
-        cout << "Would you like to play again? (Y/N): ";
+        cout << "\nDo you want to play again? (Y/N): ";
         getline(cin, input);
 
         if (input.length() == 1)
         {
             char c = toupper(input[0]);
-            if (c == 'Y' || c == 'N')
-                return c;
+            if (c == 'Y') return true;
+            if (c == 'N') return false;
         }
 
         cout << "ERROR: Enter Y or N.\n";
