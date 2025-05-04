@@ -3,10 +3,11 @@ File Name: Chapter6Ex24_RockPaperScissors.cpp
 Developer/Programmer: Luke Pritchard
 Date: 05/04/2025
 Requirements:
-- Computer randomly chooses rock, paper, or scissors
-- User inputs choice (validated)
-- Compare choices and determine winner
-- Repeatable structure using modular functions
+- User plays rock/paper/scissors against the computer
+- Ask for player's name once
+- Count how many rounds the player wins
+- Use a sentinel loop ("do again?") to repeat the game
+- All input validated; modular design with 3+ functions
 */
 
 #include <iostream>
